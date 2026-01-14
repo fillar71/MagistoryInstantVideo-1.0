@@ -14,7 +14,7 @@ import { v2 as cloudinary } from 'cloudinary';
 });
 
 const app = express();
-app.set('trust proxy', 1); // Trust Fly.io proxy
+app.set('trust proxy', 1); // Trust proxy (penting untuk DigitalOcean/Fly.io/Heroku)
 
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} from ${req.ip}`);
@@ -30,14 +30,14 @@ app.get('/health', healthHandler);
 
 // Allow CORS from anywhere (Frontend will call this)
 app.use(cors({ 
-    origin: true, 
+    origin: true, // Allow all origins
     credentials: true,
     methods: ['GET', 'POST', 'OPTIONS']
 }));
 
 app.use(express.json({ limit: '100mb' }) as any);
 
-// Fly.io sets PORT environment variable, default to 8080 if missing
+// DigitalOcean App Platform injects PORT env var
 const PORT = parseInt(process.env.PORT || '8080');
 const TEMP_DIR = path.join(os.tmpdir(), 'magistory-render');
 
